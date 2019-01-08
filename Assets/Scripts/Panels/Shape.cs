@@ -9,11 +9,12 @@ public class Shape : MonoBehaviour {
     private bool mIsPause;
     public float normalStepTime;
     private float mTimer;
-
+    private float mControllTime;
     private bool mIsSpeedUp;
     private bool mIsRocket;
     private bool mHasRocket;
     private const int kMultiple = 20;
+    private float lastMove, timeInterval = 0.3f;
 
     // Use this for initialization
     void Awake() {
@@ -28,6 +29,7 @@ public class Shape : MonoBehaviour {
             return;
         }
         mTimer += Time.deltaTime;
+        mControllTime += Time.deltaTime;
         if (mIsRocket) {
             Fall(5);
             if (!mHasRocket) {
@@ -41,6 +43,7 @@ public class Shape : MonoBehaviour {
                 Fall();
             }
         }
+
         //input
         InputControl();
     }
@@ -53,20 +56,32 @@ public class Shape : MonoBehaviour {
 
     private void InputControl() {
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            StepLeft();
+        if (Input.GetKey(KeyCode.LeftArrow)) {
+            if(Time.time - lastMove > timeInterval)
+            {
+                lastMove = Time.time;
+                StepLeft();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            StepRight();
+        else if (Input.GetKey(KeyCode.RightArrow)) {
+            if(Time.time - lastMove > timeInterval)
+            {
+                lastMove = Time.time;
+                StepRight();
+            }
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            RotateShape();
+        if (Input.GetKey(KeyCode.Space)) {
+            if(Time.time - lastMove > timeInterval)
+            {
+                lastMove = Time.time;
+                RotateShape();
+            }
         }
         if (Input.GetKeyDown(KeyCode.DownArrow)) {
             SpeedUp();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.UpArrow)) {
             Rocket();
         }
 
