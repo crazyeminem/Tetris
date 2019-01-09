@@ -14,8 +14,8 @@ public class Shape : MonoBehaviour {
     private bool mIsRocket;
     private bool mHasRocket;
     private const int kMultiple = 20;
-    private float lastMove, timeInterval = 0.3f;
-
+    private float lastMove, timeInterval = 0.1f;
+    private bool mMoving = false;
     // Use this for initialization
     void Awake() {
 
@@ -60,6 +60,7 @@ public class Shape : MonoBehaviour {
             if(Time.time - lastMove > timeInterval)
             {
                 lastMove = Time.time;
+                mMoving = true;
                 StepLeft();
             }
         }
@@ -70,7 +71,7 @@ public class Shape : MonoBehaviour {
                 StepRight();
             }
         }
-        if (Input.GetKey(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             if(Time.time - lastMove > timeInterval)
             {
                 lastMove = Time.time;
@@ -83,6 +84,28 @@ public class Shape : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.UpArrow)) {
             Rocket();
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if(mMoving)
+            {
+                mMoving = false;
+            }
+            else
+            {
+                StepLeft();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if(mMoving)
+            {
+                mMoving = false;
+            }
+            else
+            {
+                StepRight();
+            }
         }
 
     }
